@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/layout :: head(${mode == 'create' ? 'Thêm Sản phẩm' : 'Sửa Sản phẩm'})}"></head>
+<body>
+
+<div th:replace="~{layouts/layout :: page(~{::main})}">
+<main>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-box mr-1"></i>
+                        <span th:text="${mode == 'create' ? 'Thêm Sản Phẩm Mới' : 'Cập Nhật Sản Phẩm'}"></span>
+                    </h6>
+                </div>
+                <div class="card-body p-4">
+                    <form th:object="${productDTO}" method="post" enctype="multipart/form-data"
+                          th:action="${mode == 'create'} ? @{/products/create} : @{/products/edit/{id}(id=${productDTO.id})}">
+                        
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="form-group">
+                            <label class="font-weight-bold text-gray-700">Tên sản phẩm:</label>
+                            <input type="text" class="form-control" th:field="*{name}" placeholder="Nhập tên sản phẩm...">
+                            <small class="text-danger" th:errors="*{name}"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="font-weight-bold text-gray-700">Mô tả chi tiết:</label>
+                            <textarea class="form-control" th:field="*{description}" rows="4" placeholder="Mô tả sản phẩm..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="font-weight-bold text-gray-700">Đơn giá (VNĐ):</label>
+                            <input type="number" step="1000" class="form-control" th:field="*{price}" placeholder="Ví dụ: 500000">
+                            <small class="text-danger" th:errors="*{price}"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="font-weight-bold text-gray-700">Hình ảnh sản phẩm (Upload Cloudinary):</label>
+                            <input type="file" class="form-control-file border p-2 rounded" name="image" accept="image/*">
+                        </div>
+
+                        <div class="form-group" th:if="${productDTO.imageUrl != null}">
+                            <label class="font-weight-bold text-gray-700 d-block">Hình ảnh hiện tại:</label>
+                            <img th:src="${#strings.substringBefore(productDTO.imageUrl, '|')}" class="img-thumbnail" style="max-height: 140px;" alt="Preview">
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-save mr-1"></i> Lưu sản phẩm</button>
+                            <a th:href="@{/products}" class="btn btn-secondary px-4 ml-2">Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+</div>
+
+</body>
+</html>

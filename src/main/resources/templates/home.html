@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/layout :: head('Bảng Điều Khiển')}"></head>
+<body>
+
+<div th:replace="~{layouts/layout :: page(~{::main})}">
+<main>
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Bảng Điều Khiển (Dashboard)</h1>
+        <a th:href="@{/products}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm font-weight-bold">
+            <i class="fas fa-boxes fa-sm text-white-50 mr-1"></i> Xem danh sách sản phẩm
+        </a>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle mr-1"></i> <span th:text="${success}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng Số Người Dùng</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${userCount}">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tổng Số Sản Phẩm</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${productCount}">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-box-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Quyền Tài Khoản</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                 th:text="${#authorization.expression('isAuthenticated()') ? #authentication.principal.role : 'KHÁCH'}">ROLE_USER</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-shield fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Trạng Thái Hệ Thống</div>
+                            <div class="h5 mb-0 font-weight-bold text-success">
+                                <i class="fas fa-circle text-success small mr-1"></i> Trực tuyến
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-server fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-bolt mr-1"></i> Lối tắt quản trị</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-gray-700">Chào mừng bạn đến với hệ thống quản trị <strong>UTEShop</strong>!</p>
+                    <a th:href="@{/products}" class="btn btn-primary btn-icon-split mr-2 mb-2">
+                        <span class="icon text-white-50"><i class="fas fa-boxes"></i></span>
+                        <span class="text">Quản lý Sản phẩm</span>
+                    </a>
+                    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}" class="btn btn-success btn-icon-split mb-2">
+                        <span class="icon text-white-50"><i class="fas fa-users-cog"></i></span>
+                        <span class="text">Quản lý Users (Admin)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-info-circle mr-1"></i> Thông tin sinh viên</h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Họ và tên:</strong> <span class="text-primary font-weight-bold">Thái Doãn Thịnh</span></p>
+                    <p class="mb-2"><strong>Mã số sinh viên:</strong> 24133058</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+</div>
+
+</body>
+</html>
